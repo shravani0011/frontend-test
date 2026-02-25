@@ -5,12 +5,13 @@
   padding: 0;
 }
 
-/* Force light mode */
+/* Force light mode and opt out of forced dark UA conversions */
 html, body {
   background: #ffffff;
   color: #213547;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   min-height: 100vh;
+  color-scheme: light;
 }
 
 /* Links */
