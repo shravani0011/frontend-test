@@ -28,3 +28,15 @@ button {
   background: #f0f0f0;
   cursor: pointer;
 }
+
+/* Make drag handles opt-out of touch scrolling so touch-dnd works */
+.drag-handle {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Improve scrolling on mobile for horizontal kanban lists */
+.kanban-container {
+  -webkit-overflow-scrolling: touch;
+}

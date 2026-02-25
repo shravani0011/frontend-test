@@ -38,8 +38,8 @@ const Card = ({ card, columnId, deleteCard, updateCardTitle }: Props) => {
     return (
         <div ref={setNodeRef} style={style}>
             {/* Drag Handle */}
-            <span {...listeners} {...attributes}>
-                <FontAwesomeIcon icon={faHand} size="xs"/>
+            <span {...listeners} {...attributes} className="drag-handle" style={{ touchAction: "none" }}>
+                <FontAwesomeIcon icon={faHand} size="sm"/>
             </span>
 
             {/* Editable Title */}

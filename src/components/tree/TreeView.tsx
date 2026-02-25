@@ -5,6 +5,10 @@ import {
   DndContext,
   closestCenter,
   type DragEndEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -44,6 +48,11 @@ const reorderTree = (
 
 const TreeView = ({ data }: Props) => {
   const [tree, setTree] = useState<TreeNodeType[]>(data);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
+  );
 
   // Add child node
   const addNode = (parentId: string) => {
@@ -101,6 +110,7 @@ const TreeView = ({ data }: Props) => {
 
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >

@@ -66,9 +66,10 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
             <span
                 {...listeners}
                 {...attributes}
-                style={{ cursor: "grab", marginLeft: 6 }}
+                className="drag-handle"
+                style={{ cursor: "grab", marginLeft: 6, touchAction: "none" }}
             >
-                <FontAwesomeIcon icon={faHand} size="xs" />
+                <FontAwesomeIcon icon={faHand} size="sm" />
             </span>
 
             {editing ? (

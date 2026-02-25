@@ -5,6 +5,10 @@ import {
   DndContext,
   closestCenter,
   type DragEndEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 
 type Props = {
@@ -49,6 +53,12 @@ const KanbanBoard = ({ data }: Props) => {
     });
   };
 
+  // configure sensors to improve touch behavior on mobile
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
+  );
+
   const addCard = (columnId: string) => {
     setColumns((prev) =>
       prev.map((col) => {
@@ -92,6 +102,7 @@ const KanbanBoard = ({ data }: Props) => {
 
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
