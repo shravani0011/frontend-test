@@ -58,7 +58,7 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
                 style={{ cursor: "pointer" }}
                 onClick={handleToggle}
             >
-            {expanded ? <FontAwesomeIcon icon={faCaretDown} /> : <FontAwesomeIcon icon={faCaretRight} />}
+                {expanded ? <FontAwesomeIcon icon={faCaretDown} /> : <FontAwesomeIcon icon={faCaretRight} />}
             </span>
 
             {/* Drag Handle (separate) */}
@@ -102,7 +102,7 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
                     }
                 }}
             >
-                <FontAwesomeIcon icon={faTrash} size="xs"/>
+                <FontAwesomeIcon icon={faTrash} size="xs" />
             </button>
             {loading && <div>Loading...</div>}
             {expanded && node.children && (
