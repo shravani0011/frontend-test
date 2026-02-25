@@ -28,7 +28,7 @@ const Column = ({ column, addCard, deleteCard, updateCardTitle }: Props) => {
             }}
         >
             <h3 style={{ margin: 0 }}>{column.title}</h3>
-            <button
+            <button className="add-button"
                 onClick={() => addCard(column.id)}
                 style={{
                     padding: "6px 8px",

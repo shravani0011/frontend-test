@@ -28,7 +28,8 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        opacity: isDragging ? 0.4 : 1,
+        opacity: isDragging ? 0.4 : 1, 
+        marginBottom: 8,
     };
     const [expanded, setExpanded] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -86,7 +87,7 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
                 </span>
             )}
 
-            <button
+            <button className="add-button"
                 onClick={() => {
                     addNode(node.id);
                     setExpanded(true);
@@ -94,8 +95,8 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
             >
                 +
             </button>
-
-            <button
+            &nbsp;&nbsp;
+            <button className="delete-button"
                 onClick={() => {
                     if (confirm("Delete this node?")) {
                         deleteNode(node.id);
