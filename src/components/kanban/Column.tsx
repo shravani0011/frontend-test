@@ -6,9 +6,10 @@ type Props = {
     column: ColumnType;
     addCard: (columnId: string) => void;
     deleteCard: (cardId: string) => void;
+    updateCardTitle: (cardId: string, newTitle: string) => void;
 };
 
-const Column = ({ column, addCard, deleteCard }: Props) => {
+const Column = ({ column, addCard, deleteCard, updateCardTitle }: Props) => {
     const { setNodeRef } = useDroppable({
         id: column.id,
     });
@@ -45,7 +46,8 @@ const Column = ({ column, addCard, deleteCard }: Props) => {
                         key={card.id}
                         card={card}
                         columnId={column.id}
-                        deleteCard={deleteCard}
+                        deleteCard={deleteCard} 
+                        updateCardTitle={updateCardTitle}
                     />
                 ))}
             </div>
