@@ -74,7 +74,7 @@ const Card = ({ card, columnId, deleteCard, updateCardTitle }: Props) => {
             )}
 
             {/* Delete Button */}
-            <button className="delete-button" onClick={() => deleteCard(card.id)}>
+            <button onClick={() => deleteCard(card.id)}>
                 <FontAwesomeIcon icon={faTrash} size="xs"/>
             </button>
         </div>

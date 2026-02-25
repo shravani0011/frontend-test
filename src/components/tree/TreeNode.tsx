@@ -86,8 +86,8 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
                     {name}
                 </span>
             )}
-
-            <button className="add-button"
+             &nbsp;&nbsp;&nbsp;
+            <button
                 onClick={() => {
                     addNode(node.id);
                     setExpanded(true);
@@ -96,7 +96,7 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
                 +
             </button>
             &nbsp;&nbsp;
-            <button className="delete-button"
+            <button
                 onClick={() => {
                     if (confirm("Delete this node?")) {
                         deleteNode(node.id);
