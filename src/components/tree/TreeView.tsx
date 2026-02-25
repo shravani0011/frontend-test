@@ -24,7 +24,6 @@ const reorderTree = (
   activeId: string,
   overId: string
 ): TreeNodeType[] => {
-  // Try reorder at current level
   const oldIndex = nodes.findIndex((n) => n.id === activeId);
   const newIndex = nodes.findIndex((n) => n.id === overId);
 
@@ -35,7 +34,6 @@ const reorderTree = (
     return updated;
   }
 
-  // Otherwise recurse into children
   return nodes.map((n) => {
     if (!n.children) return n;
 
@@ -51,7 +49,7 @@ const TreeView = ({ data }: Props) => {
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } })
   );
 
   // Add child node

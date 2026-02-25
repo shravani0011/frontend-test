@@ -1,6 +1,7 @@
 import type { ColumnType } from "./kanban.types";
 import Card from "./Card";
 import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 type Props = {
     column: ColumnType;
@@ -16,9 +17,8 @@ const Column = ({ column, addCard, deleteCard, updateCardTitle }: Props) => {
     return (
         <div
             ref={setNodeRef}
+            className="kanban-column"
             style={{
-                width: 260,
-                minHeight: 320,
                 background: "#f4f5f7",
                 padding: 12,
                 borderRadius: 8,
@@ -40,17 +40,20 @@ const Column = ({ column, addCard, deleteCard, updateCardTitle }: Props) => {
             >
                 + Add Card
             </button>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+
+            <SortableContext items={column.cards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {column.cards.map((card) => (
                     <Card
                         key={card.id}
                         card={card}
                         columnId={column.id}
-                        deleteCard={deleteCard} 
+                        deleteCard={deleteCard}
                         updateCardTitle={updateCardTitle}
                     />
                 ))}
-            </div>
+              </div>
+            </SortableContext>
         </div>
     );
 };

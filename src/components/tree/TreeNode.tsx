@@ -53,7 +53,7 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
     };
 
     return (
-        <div ref={setNodeRef} style={{ marginLeft: 20, ...style }}>
+        <div ref={setNodeRef} {...attributes} style={{ marginLeft: 20, ...style }}>
             {/* Expand Toggle */}
             <span
                 style={{ cursor: "pointer" }}
@@ -62,15 +62,17 @@ const TreeNode = ({ node, addNode, deleteNode }: Props) => {
                 {expanded ? <FontAwesomeIcon icon={faCaretDown} /> : <FontAwesomeIcon icon={faCaretRight} />}
             </span>
 
-            {/* Drag Handle (separate) */}
-            <span
-                {...listeners}
-                {...attributes}
-                className="drag-handle"
-                style={{ cursor: "grab", marginLeft: 6, touchAction: "none" }}
-            >
-                <FontAwesomeIcon icon={faHand} size="sm" />
-            </span>
+                        {/* Drag Handle (visible for touch) */}
+                        <span {...attributes}>
+                            <button
+                                {...listeners}
+                                aria-label="Drag node"
+                                className="drag-handle-visible"
+                                style={{ marginLeft: 6, touchAction: "none", border: "none" }}
+                            >
+                                <FontAwesomeIcon icon={faHand} size="sm" />
+                            </button>
+                        </span>
 
             {editing ? (
                 <input

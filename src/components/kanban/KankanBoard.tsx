@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { CardType, ColumnType } from "./kanban.types";
-import Column from "./Column";
 import {
   DndContext,
   closestCenter,
@@ -10,6 +9,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import Column from "./Column";
 
 type Props = {
   data: ColumnType[];
@@ -22,11 +22,43 @@ const KanbanBoard = ({ data }: Props) => {
     const { active, over } = event;
     if (!over) return;
 
-    const activeColumnId = active.data.current?.columnId;
-    const overColumnId = over.id; // droppable column id
+    const activeColumnId =
+      (active.data && (active.data.current as any)?.columnId) ||
+      (active.data && (active.data.current as any)?.sortable?.containerId) ||
+      null;
 
-    if (!activeColumnId || activeColumnId === overColumnId) return;
+    const overColumnId =
+      (over.data && (over.data.current as any)?.columnId) ||
+      (over.data && (over.data.current as any)?.sortable?.containerId) ||
+      String(over.id);
 
+    let resolvedOverColumnId = overColumnId;
+    const parent = columns.find((col) =>
+      col.cards.some((c) => c.id === overColumnId)
+    );
+    if (parent) resolvedOverColumnId = parent.id;
+
+    if (!activeColumnId) return;
+
+    if (activeColumnId === resolvedOverColumnId) {
+      setColumns((prev) =>
+        prev.map((col) => {
+          if (col.id !== activeColumnId) return col;
+
+          const oldIndex = col.cards.findIndex((c) => c.id === active.id);
+          const newIndex = col.cards.findIndex((c) => c.id === over.id);
+          if (oldIndex === -1 || newIndex === -1) return col;
+
+          const updated = [...col.cards];
+          const [moved] = updated.splice(oldIndex, 1);
+          updated.splice(newIndex, 0, moved);
+          return { ...col, cards: updated };
+        })
+      );
+      return;
+    }
+
+    // Otherwise move card between columns (remove from source and append to target)
     setColumns((prev) => {
       let movedCard: CardType | undefined;
 
@@ -45,7 +77,7 @@ const KanbanBoard = ({ data }: Props) => {
       });
 
       return newCols.map((col) => {
-        if (col.id === overColumnId && movedCard) {
+        if (col.id === resolvedOverColumnId && movedCard) {
           return { ...col, cards: [...col.cards, movedCard] };
         }
         return col;
@@ -53,10 +85,11 @@ const KanbanBoard = ({ data }: Props) => {
     });
   };
 
-  // configure sensors to improve touch behavior on mobile
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 150, tolerance: 5 },
+    })
   );
 
   const addCard = (columnId: string) => {

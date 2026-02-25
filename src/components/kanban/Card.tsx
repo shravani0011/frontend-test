@@ -1,22 +1,21 @@
 import type { CardType } from "./kanban.types";
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities"; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHand, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 
 type Props = {
     card: CardType;
     columnId: string;
-    deleteCard: (cardId: string) => void; 
+    deleteCard: (cardId: string) => void;
     updateCardTitle: (cardId: string, newTitle: string) => void;
 };
 
 const Card = ({ card, columnId, deleteCard, updateCardTitle }: Props) => {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    const { attributes, listeners, setNodeRef, transform } = useSortable({
         id: card.id,
         data: {
-            type: "card",
             columnId: columnId,
         },
     });
@@ -38,8 +37,15 @@ const Card = ({ card, columnId, deleteCard, updateCardTitle }: Props) => {
     return (
         <div ref={setNodeRef} style={style}>
             {/* Drag Handle */}
-            <span {...listeners} {...attributes} className="drag-handle" style={{ touchAction: "none" }}>
-                <FontAwesomeIcon icon={faHand} size="sm"/>
+            <span {...attributes}>
+                <button
+                    {...listeners}
+                    aria-label="Drag card"
+                    className="drag-handle-visible"
+                    style={{ touchAction: "none", border: "none" }}
+                >
+                    <FontAwesomeIcon icon={faHand} size="sm" />
+                </button>
             </span>
 
             {/* Editable Title */}
@@ -75,7 +81,7 @@ const Card = ({ card, columnId, deleteCard, updateCardTitle }: Props) => {
 
             {/* Delete Button */}
             <button onClick={() => deleteCard(card.id)}>
-                <FontAwesomeIcon icon={faTrash} size="xs"/>
+                <FontAwesomeIcon icon={faTrash} size="xs" />
             </button>
         </div>
     );
