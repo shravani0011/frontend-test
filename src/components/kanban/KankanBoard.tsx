@@ -52,12 +52,12 @@ const KanbanBoard = ({ data }: Props) => {
   const addCard = (columnId: string) => {
     setColumns((prev) =>
       prev.map((col) => {
-        if (col.id !== columnId) return col; 
+        if (col.id !== columnId) return col;
         const nextNumber = col.cards.length + 1;
-        const newTitle = ` ${col.id} Task ${nextNumber}`; 
+        const newTitle = ` ${col.id} Task ${nextNumber}`;
 
         return {
-          ...col,  
+          ...col,
           cards: [
             ...col.cards,
             {
@@ -67,6 +67,17 @@ const KanbanBoard = ({ data }: Props) => {
           ],
         };
       })
+    );
+  };
+
+  const updateCardTitle = (cardId: string, newTitle: string) => {
+    setColumns((prev) =>
+      prev.map((col) => ({
+        ...col,
+        cards: col.cards.map((c) =>
+          c.id === cardId ? { ...c, title: newTitle } : c
+        ),
+      }))
     );
   };
 
@@ -88,7 +99,7 @@ const KanbanBoard = ({ data }: Props) => {
         style={{
           display: "flex",
           gap: 20,
-          flexWrap: "wrap",  
+          flexWrap: "wrap",
           alignItems: "flex-start",
         }}
       >
@@ -98,6 +109,7 @@ const KanbanBoard = ({ data }: Props) => {
             column={col}
             addCard={addCard}
             deleteCard={deleteCard}
+            updateCardTitle={updateCardTitle}
           />
         ))}
       </div>

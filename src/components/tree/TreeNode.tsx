@@ -7,7 +7,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretRight, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretRight, faHand, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     node: TreeNodeType;
@@ -16,20 +16,20 @@ type Props = {
 };
 
 const TreeNode = ({ node, addNode, deleteNode }: Props) => {
-const {
-  attributes,
-  listeners,
-  setNodeRef,
-  transform,
-  transition,
-  isDragging,
-} = useSortable({ id: node.id });
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: node.id });
 
-const style = {
-  transform: CSS.Transform.toString(transform),
-  transition,
-  opacity: isDragging ? 0.4 : 1,
-};
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.4 : 1,
+    };
     const [expanded, setExpanded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [editing, setEditing] = useState(false);
@@ -53,13 +53,21 @@ const style = {
 
     return (
         <div ref={setNodeRef} style={{ marginLeft: 20, ...style }}>
+            {/* Expand Toggle */}
             <span
-                style={{ cursor: "grab" }}
-                {...listeners}
-                {...attributes}
+                style={{ cursor: "pointer" }}
                 onClick={handleToggle}
             >
-                {expanded ? <FontAwesomeIcon icon={faCaretDown} /> : <FontAwesomeIcon icon={faCaretRight} />}
+            {expanded ? <FontAwesomeIcon icon={faCaretDown} /> : <FontAwesomeIcon icon={faCaretRight} />}
+            </span>
+
+            {/* Drag Handle (separate) */}
+            <span
+                {...listeners}
+                {...attributes}
+                style={{ cursor: "grab", marginLeft: 6 }}
+            >
+                <FontAwesomeIcon icon={faHand} size="xs" />
             </span>
 
             {editing ? (
@@ -94,7 +102,7 @@ const style = {
                     }
                 }}
             >
-               <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faTrash} size="xs"/>
             </button>
             {loading && <div>Loading...</div>}
             {expanded && node.children && (
